@@ -1,0 +1,9 @@
+{
+  "version": "2.0.0",
+  "release_date": "2026-01-24",
+  "min_ue_version": "5.0",
+  "changelog": [
+    "2.0.0: Added 35 dedicated C++ REST endpoints (Assets, Actors, Level, Editor, Materials, Blueprints)",
+    "1.0.0: Initial release with Python execution endpoint"
+  ]
+}

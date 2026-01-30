@@ -1,0 +1,17 @@
+# UE build artifacts
+Binaries/
+Intermediate/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# IDE
+.vs/
+.vscode/
+.idea/
