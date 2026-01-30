@@ -1,0 +1,11 @@
+{
+  "name": "unreal-bridge",
+  "description": "Automate Unreal Engine editor tasks via REST API with 50+ endpoints",
+  "version": "2.0.0",
+  "author": {
+    "name": "yevhe"
+  },
+  "repository": "https://github.com/yevhe/UnrealBridgeREST",
+  "license": "MIT",
+  "keywords": ["unreal-engine", "rest-api", "editor-automation", "materials", "blueprints"]
+}

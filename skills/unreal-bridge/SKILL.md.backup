@@ -1,0 +1,147 @@
+---
+name: unreal-python
+description: Use when automating Unreal Engine editor tasks, manipulating Blueprints/assets via Python, discovering available Python APIs, or performing Python-based UE scripting. Provides verified, test-first workflows.
+---
+
+<objective>
+Provides verified, test-first workflows for discovering and using the Unreal Engine Python API. Prevents errors from assuming APIs exist by requiring verification before suggestions (95% confidence rule). Covers Blueprint manipulation, asset management, editor automation, and commandlet execution.
+</objective>
+
+<quick_start>
+**Execution Methods (auto-detected):**
+
+1. **REST API** (preferred when Unreal Editor is open):
+   - Instant execution, no editor restart needed
+   - Auto-detected via `{ProjectDir}/Saved/UnrealPythonREST.json`
+
+2. **Commandlet** (fallback when editor is closed):
+   - Uses `-run=pythonscript -script="test.py"`
+   - Check log file: `{ProjectDir}/Saved/Logs/{ProjectName}.log`
+
+**Test any API before using:**
+1. Search Python stub: `{ProjectDir}/Intermediate/PythonStub/unreal.py`
+2. Write minimal test script
+3. Execute via REST or commandlet
+4. Verify output
+5. Only then use in production code
+
+**Critical:** NEVER use `-ExecutePythonScript` (disabled in commandlets). Always use `-run=pythonscript -script="path"` instead.
+</quick_start>
+
+<api_discovery>
+**Python Stub File** - Your primary API reference:
+- Location: `{ProjectDir}/Intermediate/PythonStub/unreal.py`
+- Contains ALL exposed Python APIs with type hints and docstrings
+- Search here FIRST before suggesting any API
+- If API isn't in stub, it's NOT available in Python (even if exists in C++)
+- Regenerates when editor loads - always check current version
+</api_discovery>
+
+<rest_api_execution>
+**REST API Execution (Recommended)**
+
+When the UnrealPythonREST plugin is enabled:
+
+1. **Auto-Detection:**
+   - Client checks `{ProjectDir}/Saved/UnrealPythonREST.json`
+   - Verifies server is alive via `/health` endpoint
+   - Falls back to commandlet if unavailable
+
+2. **Using the Python Client:**
+   ```python
+   from scripts.ue_rest_client import UnrealExecutor
+
+   executor = UnrealExecutor("G:/UE_Projects/MyProject")
+   print(f"Mode: {executor.mode}")  # "rest" or "commandlet"
+
+   result = executor.execute("import unreal; unreal.log('Hello!')")
+   print(f"Success: {result['success']}")
+   ```
+
+3. **Direct HTTP calls:**
+   ```bash
+   curl -X POST http://localhost:8080/api/v1/python/execute \
+     -H "Content-Type: application/json" \
+     -d '{"code": "import unreal; unreal.log(\"Test\")"}'
+   ```
+
+See `references/rest_api.md` for full API documentation.
+</rest_api_execution>
+
+<plugin_installation>
+**Installing UnrealPythonREST Plugin**
+
+Use slash commands to manage the REST plugin:
+
+1. **Install:** `/install-ue-rest G:/UE_Projects/MyGame`
+2. **Update:** `/install-ue-rest G:/UE_Projects/MyGame --update`
+3. **Status:** `/ue-rest-status G:/UE_Projects/MyGame`
+4. **Uninstall:** `/uninstall-ue-rest G:/UE_Projects/MyGame`
+
+**What installation does:**
+- Copies plugin to `{Project}/Plugins/UnrealPythonREST/`
+- Enables plugin in `.uproject` file
+- Enables PythonScriptPlugin dependency
+- Tracks installed version for future updates
+
+**Updating existing installations:**
+- Use `--update` flag to upgrade to latest version
+- Installer compares versions and skips if already up-to-date
+- Automatic backup of previous version before update
+
+**After installation:**
+1. Open project in Unreal Editor
+2. Plugin starts REST server automatically
+3. Use `unreal-python` skill with instant execution
+</plugin_installation>
+
+<critical_constraints>
+**NEVER:**
+- Use `-ExecutePythonScript` flag (disabled in commandlets)
+- Use Python file operations (`os.rename`, `shutil.move`) on .uasset files
+- Assume APIs exist without stub verification
+- Expect `unreal.log()` output in stdout (goes to log file only)
+
+**ALWAYS:**
+- Use full Windows paths with forward slashes
+- Test APIs before suggesting (95% confidence rule)
+- Check log files for script output
+- Use `unreal.EditorAssetLibrary` for asset operations
+</critical_constraints>
+
+<security_checklist>
+**Asset Corruption Risks:**
+- NEVER use `os.rename()`, `shutil.move()`, or `pathlib.rename()` on .uasset/.umap files
+- These operations corrupt Unreal's asset registry and break references
+- Always use `unreal.EditorAssetLibrary.rename_asset()` or `duplicate_asset()` instead
+- Back up project before bulk asset operations
+- Test operations on single asset before batch processing
+</security_checklist>
+
+<reference_guides>
+**Core guides** (see references/):
+- **base_info.md** - Environment setup, command execution, API discovery workflow
+- **best_practices.md** - Official Unreal Python patterns and verified practices
+- **common_apis.md** - Verified API reference (97.1% test success rate)
+- **rest_api.md** - REST API reference for live execution (NEW)
+- **research_methodology.md** - Investigating "can Python do X?" claims
+- **introspection_guide.md** - Blueprint/class introspection techniques (CDO comparison, component enumeration)
+- **stub_locations.md** - Finding and using the Python stub file
+
+**Helper scripts** (see scripts/):
+- `ue_rest_client.py` - REST client with auto-detection (NEW)
+- `test_unreal_api.py` - API testing template
+- `run_python_test.sh` - Execute tests with log filtering
+- `install_plugin.py` - Install UnrealPythonREST to UE project
+- `uninstall_plugin.py` - Remove plugin from project
+- `check_plugin_status.py` - Check installation status
+</reference_guides>
+
+<success_criteria>
+- All API suggestions verified via stub search + commandlet/REST test
+- No assumptions about C++ API availability in Python
+- Asset operations use Unreal APIs (never direct file operations)
+- Scripts execute successfully with output verification
+- User understands test-first workflow (95% confidence rule)
+- REST API used when available for faster iteration
+</success_criteria>
