@@ -1,17 +1,17 @@
 ---
 name: install-ue-rest
-description: Install or update UnrealPythonREST plugin in Unreal Engine project for live Python execution
+description: Install or update UnrealBridgeREST plugin in Unreal Engine project for live Python execution
 arguments:
   - name: project_dir
     description: Path to Unreal Engine project directory
     required: true
 ---
 
-Install or update the UnrealPythonREST plugin in the specified Unreal Engine project.
+Install or update the UnrealBridgeREST plugin in the specified Unreal Engine project.
 
 ## What This Does
 
-1. Copies the UnrealPythonREST plugin to `{project}/Plugins/`
+1. Copies the UnrealBridgeREST plugin to `{project}/Plugins/`
 2. Enables the plugin in the `.uproject` file
 3. Enables the required PythonScriptPlugin dependency
 4. Tracks installed version for future updates

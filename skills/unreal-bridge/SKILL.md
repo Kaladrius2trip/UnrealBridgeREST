@@ -1,6 +1,6 @@
 ---
 name: unreal-bridge
-description: Use when automating Unreal Engine editor tasks via REST API, manipulating actors/materials/blueprints, working with the UnrealPythonREST plugin, or executing Python in UE.
+description: Use when automating Unreal Engine editor tasks via REST API, manipulating actors/materials/blueprints, working with the UnrealBridgeREST plugin, or executing Python in UE.
 ---
 
 <objective>
@@ -57,7 +57,7 @@ AskUserQuestion({
 <quick_start>
 **Check if REST API available:**
 ```bash
-cat {ProjectDir}/Saved/UnrealPythonREST.json  # Get port
+cat {ProjectDir}/Saved/UnrealBridgeREST.json  # Get port
 curl -s "http://localhost:$PORT/api/v1/health"
 ```
 

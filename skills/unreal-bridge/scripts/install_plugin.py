@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Silent installer for UnrealPythonREST plugin into Unreal Engine projects.
+Silent installer for UnrealBridgeREST plugin into Unreal Engine projects.
 
 Usage:
     python install_plugin.py <project_dir> [--dry-run] [--force] [--verbose] [--quiet] [--check]
@@ -23,10 +23,10 @@ from typing import Callable, Dict, Any, List, Tuple, Optional
 from ue_project_utils import find_uproject_file_with_reason, read_uproject, write_uproject
 
 # Plugin source location (in skill assets directory)
-PLUGIN_SOURCE = Path.home() / ".claude" / "skills" / "unreal-bridge" / "assets" / "UnrealPythonREST"
+PLUGIN_SOURCE = Path(__file__).resolve().parent.parent.parent
 
 # Required plugins that must be enabled
-REQUIRED_PLUGINS = ["PythonScriptPlugin", "UnrealPythonREST"]
+REQUIRED_PLUGINS = ["PythonScriptPlugin", "UnrealBridgeREST"]
 
 # Version tracking
 VERSION_FILE = "VERSION.json"
@@ -52,7 +52,7 @@ def get_source_version() -> Optional[str]:
 
 def get_installed_version(project_dir: Path) -> Optional[str]:
     """Get version string from installed plugin in project."""
-    plugin_dir = project_dir / "Plugins" / "UnrealPythonREST"
+    plugin_dir = project_dir / "Plugins" / "UnrealBridgeREST"
     info = read_plugin_version(plugin_dir)
     return info.get("version") if info else None
 
@@ -206,11 +206,11 @@ def update_uproject_file(uproject_path: Path, result: InstallResult) -> bool:
 
 def verify_installation(project_dir: Path, result: InstallResult) -> bool:
     """Verify plugin installation is complete."""
-    plugin_dir = project_dir / "Plugins" / "UnrealPythonREST"
+    plugin_dir = project_dir / "Plugins" / "UnrealBridgeREST"
 
     # Check plugin files exist
     required_files = [
-        "UnrealPythonREST.uplugin",
+        "UnrealBridgeREST.uplugin",
         "Source/UnrealPythonREST/UnrealPythonREST.Build.cs",
         "Source/UnrealPythonREST/Public/UnrealPythonREST.h",
     ]
@@ -230,7 +230,7 @@ def verify_installation(project_dir: Path, result: InstallResult) -> bool:
 def install_plugin(project_dir: str, dry_run: bool = False, force: bool = False,
                    check_only: bool = False, update: bool = False) -> InstallResult:
     """
-    Install UnrealPythonREST plugin into Unreal Engine project.
+    Install UnrealBridgeREST plugin into Unreal Engine project.
 
     Args:
         project_dir: Path to UE project directory
@@ -269,7 +269,7 @@ def install_plugin(project_dir: str, dry_run: bool = False, force: bool = False,
 
     # Destination
     plugins_dir = project_path / "Plugins"
-    plugin_dest = plugins_dir / "UnrealPythonREST"
+    plugin_dest = plugins_dir / "UnrealBridgeREST"
 
     # Check if already installed
     if plugin_dest.exists():
@@ -352,7 +352,7 @@ def print_result(result: InstallResult, quiet: bool = False):
 
     # Verbose output (default behavior)
     print("\n" + "=" * 60)
-    print("UnrealPythonREST Plugin Installation")
+    print("UnrealBridgeREST Plugin Installation")
     print("=" * 60)
 
     for name, success, message in result.steps:
@@ -385,7 +385,7 @@ def print_result(result: InstallResult, quiet: bool = False):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Install UnrealPythonREST plugin into Unreal Engine project",
+        description="Install UnrealBridgeREST plugin into Unreal Engine project",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

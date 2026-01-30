@@ -1,13 +1,13 @@
 ---
 name: uninstall-ue-rest
-description: Remove UnrealPythonREST plugin from Unreal Engine project
+description: Remove UnrealBridgeREST plugin from Unreal Engine project
 arguments:
   - name: project_dir
     description: Path to Unreal Engine project directory
     required: true
 ---
 
-Remove the UnrealPythonREST plugin from the specified Unreal Engine project.
+Remove the UnrealBridgeREST plugin from the specified Unreal Engine project.
 
 ## What This Does
 

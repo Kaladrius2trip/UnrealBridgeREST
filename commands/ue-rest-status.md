@@ -1,13 +1,13 @@
 ---
 name: ue-rest-status
-description: Check UnrealPythonREST plugin installation status
+description: Check UnrealBridgeREST plugin installation status
 arguments:
   - name: project_dir
     description: Path to Unreal Engine project directory
     required: true
 ---
 
-Check the installation status of UnrealPythonREST plugin for a project.
+Check the installation status of UnrealBridgeREST plugin for a project.
 
 ## What This Shows
 
